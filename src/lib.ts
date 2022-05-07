@@ -50,7 +50,7 @@ export function overflow(store: Health | Stamina): number {
 export function action(
   oldHealth: Health,
   oldStamina: Stamina,
-  action: Attack | Heal,
+  action: Attack | Heal
 ): { health: Health; stamina: Stamina } {
   // @ts-expect-error
   const health: Health = structuredClone(oldHealth);
@@ -84,18 +84,24 @@ type Unit = {
   name: string;
   health: Health;
   attack: Attack;
-  heal: Heal;
-}
+  // heal: Heal;
+};
 
 /** Creates a `Unit` component. */
-export function createUnit(name: string, health: Health, attack: Attack, heal: Heal): Unit {
-  return { _tag: "unit", name, health, attack, heal };
+export function createUnit(
+  name: string,
+  health: Health,
+  attack: Attack
+  // heal: Heal
+): Unit {
+  // return { _tag: 'unit', name, health, attack, heal };
+  return { _tag: "unit", name, health, attack };
 }
 
 type Deck = {
   _tag: "deck";
   units: Unit[];
-}
+};
 
 /** Creates a `Deck` component. */
 export function createDeck(units: Unit[]): Deck {
@@ -105,7 +111,7 @@ export function createDeck(units: Unit[]): Deck {
 type Lane = {
   _tag: "lane";
   unit: Unit;
-}
+};
 
 /** Creates a `Lane` component. */
 export function createLane(unit: Unit): Lane {
@@ -115,3 +121,14 @@ export function createLane(unit: Unit): Lane {
 export const DEFAULT_UNITS = [
   createUnit("Soldier", createHealth(8, 8), createAttack(1, 2, 0.01)),
 ];
+
+type Player = {
+  _tag: "player";
+  name: string;
+  deck: Deck;
+  health: Health;
+};
+
+export function createPlayer(name: string, deck: Deck, health: Health): Player {
+  return { _tag: "player", name, deck, health };
+}
