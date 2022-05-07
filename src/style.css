@@ -9,7 +9,7 @@ body {
 .container {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 2fr 1fr;
+  grid-template-rows: 3fr 1fr;
   gap: 0px 0px;
   grid-auto-flow: row;
   grid-template-areas:
@@ -20,11 +20,29 @@ body {
 .lanes {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr;
+  grid-template-rows: 1fr 2fr;
   gap: 0px 0px;
   grid-auto-flow: row;
-  grid-template-areas: "lane-1 lane-2 lane-3 lane-4";
-  grid-area: lane;
+  grid-template-areas:
+    "other-lane-1 other-lane-2 other-lane-3 other-lane-4"
+    "lane-1 lane-2 lane-3 lane-4";
+  grid-area: lanes;
+}
+
+.other-lane-1 {
+  grid-area: other-lane-1;
+}
+
+.other-lane-2 {
+  grid-area: other-lane-2;
+}
+
+.other-lane-3 {
+  grid-area: other-lane-3;
+}
+
+.other-lane-4 {
+  grid-area: other-lane-4;
 }
 
 .lane-1 {

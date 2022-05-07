@@ -8,13 +8,17 @@
     "check:all": "yarn format:check && yarn lint"
   },
   "dependencies": {
+    "tick-knock": "^4.0.2",
+    "zepto": "^1.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.31",
+    "@types/zepto": "^1.0.32",
+    "@typescript-eslint/eslint-plugin": "^5.22.0",
+    "@typescript-eslint/parser": "^5.22.0",
+    "eslint": "^8.15.0",
     "parcel": "^2.5.0",
     "prettier": "^2.6.2",
     "typescript": "^4.6.4"
-  },
-  "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.22.0",
-    "@typescript-eslint/parser": "^5.22.0",
-    "eslint": "^8.15.0"
   }
 }

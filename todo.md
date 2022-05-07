@@ -32,6 +32,7 @@
 - ATK
 - HP
 - Image
+- Mana (cost)
 - Universal units (can be used in any lane)
 
 ## Buildings
