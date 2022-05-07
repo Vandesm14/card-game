@@ -2,11 +2,19 @@
   "scripts": {
     "start": "parcel serve ./src/index.html -p 5500",
     "format": "prettier -w ./src",
-    "format:check": "prettier -c ./src"
+    "format:check": "prettier -c ./src",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix",
+    "check:all": "yarn format:check && yarn lint"
   },
   "dependencies": {
     "parcel": "^2.5.0",
     "prettier": "^2.6.2",
     "typescript": "^4.6.4"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.22.0",
+    "@typescript-eslint/parser": "^5.22.0",
+    "eslint": "^8.15.0"
   }
 }

@@ -52,9 +52,9 @@ export function action(
   oldStamina: Stamina,
   action: Attack | Heal
 ): { health: Health; stamina: Stamina } {
-  // @ts-expect-error
+  // @ts-expect-error: structuredClone should work
   const health: Health = structuredClone(oldHealth);
-  // @ts-expect-error
+  // @ts-expect-error: structuredClone should work
   const stamina: Stamina = structuredClone(oldStamina);
 
   stamina.current -= Math.max(0, fatigue(action));
