@@ -1,0 +1,86 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 2fr 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "lanes lanes lanes lanes"
+    "game deck deck deck";
+}
+
+.lanes {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "lane-1 lane-2 lane-3 lane-4";
+  grid-area: lane;
+}
+
+.lane-1 {
+  grid-area: lane-1;
+}
+
+.lane-2 {
+  grid-area: lane-2;
+}
+
+.lane-3 {
+  grid-area: lane-3;
+}
+
+.lane-4 {
+  grid-area: lane-4;
+}
+
+.game {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  grid-template-rows: 1fr 1fr 2fr 2fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "mana info"
+    "turn info"
+    "health info"
+    "skip info";
+  grid-area: game;
+}
+
+.mana {
+  grid-area: mana;
+}
+
+.turn {
+  grid-area: turn;
+}
+
+.health {
+  grid-area: health;
+}
+
+.skip {
+  grid-area: skip;
+}
+
+.info {
+  grid-area: info;
+}
+
+.deck {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  grid-area: deck;
+}
