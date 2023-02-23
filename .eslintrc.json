@@ -5,7 +5,7 @@
   "ignorePatterns": ["jest.config.js"],
   "rules": {
     "@typescript-eslint/no-unused-vars": "error",
-    // "unused-imports/no-unused-imports": "error", // this gives a duplicate error for the one above
+    "unused-imports/no-unused-imports": "error", // this gives a duplicate error for the one above
     "no-duplicate-imports": "warn",
     "no-console": "warn",
     "no-duplicate-case": "warn",
