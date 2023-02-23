@@ -4,8 +4,9 @@ export class Card {
   public readonly description!: string;
   public readonly image!: string;
 
-  public readonly attack!: number;
-  public readonly health!: number;
+  public attack!: number;
+  public defense!: number;
+  public health!: number;
 
   public owner!: string;
 
@@ -25,6 +26,7 @@ export const Hero = () =>
     description: 'A hero',
     image: 'hero.png',
     attack: 2,
+    defense: 3,
     health: 5,
     owner: 'player',
   });
@@ -36,7 +38,8 @@ export const HeroArcher = () =>
     description: 'A hero archer',
     image: 'hero-archer.png',
     attack: 4,
-    health: 3,
+    defense: 1,
+    health: 4,
     owner: 'player',
   });
 
@@ -47,7 +50,8 @@ export const Goblin = () =>
     description: 'A goblin',
     image: 'goblin.png',
     attack: 2,
-    health: 2,
+    defense: 3,
+    health: 5,
     owner: 'enemy',
   });
 
@@ -57,7 +61,8 @@ export const GoblinArcher = () =>
     name: 'Goblin Archer',
     description: 'A goblin archer',
     image: 'goblin-archer.png',
-    attack: 3,
-    health: 1,
+    attack: 4,
+    defense: 1,
+    health: 4,
     owner: 'enemy',
   });

@@ -4,6 +4,8 @@ import { CardHand } from './components/CardHand';
 import { Card, Goblin, GoblinArcher, Hero } from './cards';
 import { flex } from './compose/styles';
 import { ActionMenu } from './components/ActionMenu';
+import { range } from 'brain.js/dist/src/utilities/range';
+import { chance } from './chance';
 
 function Main() {
   const [selectedEnemyCard, setSelectedEnemyCard] = React.useState<Card | null>(
@@ -40,11 +42,31 @@ function Main() {
     const enemyCard = selectedEnemyCard;
     const playerCard = selectedPlayerCard;
 
-    // const;
+    const enemyHitChance = chance(1 / 3);
+    const playerHitChance = chance(1 / 3);
+
+    const newEnemyCard = {
+      ...enemyCard,
+      health: enemyCard.health - (playerHitChance ? playerCard.attack : 0),
+    };
+
+    const newPlayerCard = {
+      ...playerCard,
+      health: playerCard.health - (enemyHitChance ? enemyCard.attack : 0),
+    };
+
+    const newCards = cards.map((card) => {
+      if (card.id === enemyCard.id) return newEnemyCard;
+      if (card.id === playerCard.id) return newPlayerCard;
+      return card;
+    });
+
+    setCards(newCards);
   };
 
   const handleActionSelect = (action: string) => {
     if (action === 'cancel') clearSelection();
+    if (action === 'attack') attack();
   };
 
   return (
