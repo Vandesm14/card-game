@@ -1,4 +1,5 @@
 import { Card } from '../cards';
+import { flex } from '../styles';
 
 interface CardFaceProps {
   card: Card;
@@ -10,10 +11,9 @@ export const CardFace = ({ card, style, onClick }: CardFaceProps) => {
   return (
     <div
       style={{
-        display: 'flex',
-        flexDirection: 'column',
+        ...flex.col,
+        ...flex.center,
         justifyContent: 'flex-start',
-        alignItems: 'center',
         width: '150px',
         height: '200px',
         border: '2px solid black',

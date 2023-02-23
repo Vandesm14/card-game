@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, filterByOwner } from '../cards';
+import { flex } from '../styles';
 import { CardFace } from './Card';
 
 export interface CardHandProps {
@@ -28,8 +29,7 @@ export const CardHand = ({
   return (
     <div
       style={{
-        display: 'flex',
-        flexDirection: 'column',
+        ...flex.col,
         justifyContent: 'flex-start',
         alignItems: 'center',
       }}
@@ -37,10 +37,8 @@ export const CardHand = ({
       <h2>{title}</h2>
       <div
         style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
+          ...flex.row,
+          ...flex.center,
         }}
       >
         {filtered.map((card, i) => (

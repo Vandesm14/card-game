@@ -2,6 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { CardHand } from './components/CardHand';
 import { Card, filterByOwner, Goblin, GoblinArcher, Hero } from './cards';
+import { flex } from './styles';
 
 function Main() {
   const [selectedEnemyCard, setSelectedEnemyCard] = React.useState<Card | null>(
@@ -26,8 +27,7 @@ function Main() {
   return (
     <main
       style={{
-        display: 'flex',
-        flexDirection: 'column',
+        ...flex.col,
         justifyContent: 'space-between',
         height: '100vh',
       }}
@@ -39,12 +39,14 @@ function Main() {
         onSelectionChange={handleSelectionEnemyChange}
         selectedCard={selectedEnemyCard}
       />
-      <CardHand
-        cards={cards}
-        owner="player"
-        onSelectionChange={handleSelectionPlayerChange}
-        selectedCard={selectedPlayerCard}
-      />
+      <div>
+        <CardHand
+          cards={cards}
+          owner="player"
+          onSelectionChange={handleSelectionPlayerChange}
+          selectedCard={selectedPlayerCard}
+        />
+      </div>
     </main>
   );
 }
