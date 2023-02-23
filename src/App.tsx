@@ -4,10 +4,13 @@ import { CardHand } from './components/CardHand';
 import { Card, Goblin, GoblinArcher, Hero } from './cards';
 import { flex } from './compose/styles';
 import { ActionMenu } from './components/ActionMenu';
-import { range } from 'brain.js/dist/src/utilities/range';
 import { chance } from './chance';
+import { useEnqueue } from './enqueue/hooks';
+import { EnqueueProvider } from './enqueue/context';
 
 function Main() {
+  const { emit } = useEnqueue();
+
   const [selectedEnemyCard, setSelectedEnemyCard] = React.useState<Card | null>(
     null
   );
@@ -42,17 +45,20 @@ function Main() {
     const enemyCard = selectedEnemyCard;
     const playerCard = selectedPlayerCard;
 
-    const enemyHitChance = chance(1 / 3);
-    const playerHitChance = chance(1 / 3);
+    const shouldHitEnemy = chance(1 / 3);
+    const shouldHitPlayer = chance(1 / 3);
+
+    if (shouldHitEnemy) emit({ data: { type: 'hit', id: enemyCard.id } });
+    if (shouldHitPlayer) emit({ data: { type: 'hit', id: playerCard.id } });
 
     const newEnemyCard = {
       ...enemyCard,
-      health: enemyCard.health - (playerHitChance ? playerCard.attack : 0),
+      health: enemyCard.health - (shouldHitEnemy ? playerCard.attack : 0),
     };
 
     const newPlayerCard = {
       ...playerCard,
-      health: playerCard.health - (enemyHitChance ? enemyCard.attack : 0),
+      health: playerCard.health - (shouldHitPlayer ? enemyCard.attack : 0),
     };
 
     const newCards = cards.map((card) => {
@@ -114,5 +120,13 @@ function Main() {
   );
 }
 
+function Root() {
+  return (
+    <EnqueueProvider>
+      <Main />
+    </EnqueueProvider>
+  );
+}
+
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-createRoot(document.getElementById('root')!).render(<Main />);
+createRoot(document.getElementById('root')!).render(<Root />);
