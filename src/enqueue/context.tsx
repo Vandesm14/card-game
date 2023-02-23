@@ -1,5 +1,4 @@
 import React from 'react';
-import { isNotExpired } from './fns';
 import { QueueItem } from './types';
 
 export interface EnqueueValue {
@@ -20,14 +19,14 @@ export const EnqueueProvider = ({
 }) => {
   const [queue, setQueue] = React.useState<QueueItem[]>([]);
 
-  // Filter expired items every second
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      setQueue((queue) => queue.filter(isNotExpired));
-    }, 1000);
+  // // Filter expired items every second
+  // React.useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setQueue((queue) => queue.filter(isNotExpired));
+  //   }, 1000);
 
-    return () => clearInterval(interval);
-  }, []);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   return (
     <EnqueueContext.Provider value={{ queue, setQueue }}>
