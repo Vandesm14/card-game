@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { CardHand } from './components/CardHand';
 import { Card, filterByOwner, Goblin, GoblinArcher, Hero } from './cards';
 import { flex } from './styles';
+import { ActionMenu } from './components/ActionMenu';
 
 function Main() {
   const [selectedEnemyCard, setSelectedEnemyCard] = React.useState<Card | null>(
@@ -24,6 +25,16 @@ function Main() {
     setSelectedPlayerCard(card);
   };
 
+  const actions =
+    selectedEnemyCard && selectedPlayerCard ? ['attack', 'cancel'] : [];
+
+  const handleActionSelect = (action: string) => {
+    if (action === 'cancel') {
+      setSelectedEnemyCard(null);
+      setSelectedPlayerCard(null);
+    }
+  };
+
   return (
     <main
       style={{
@@ -39,13 +50,19 @@ function Main() {
         onSelectionChange={handleSelectionEnemyChange}
         selectedCard={selectedEnemyCard}
       />
-      <div>
+      <div
+        style={{
+          ...flex.row,
+          justifyContent: 'space-between',
+        }}
+      >
         <CardHand
           cards={cards}
           owner="player"
           onSelectionChange={handleSelectionPlayerChange}
           selectedCard={selectedPlayerCard}
         />
+        <ActionMenu actions={actions} onActionClick={handleActionSelect} />
       </div>
     </main>
   );
