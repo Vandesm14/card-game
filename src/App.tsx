@@ -10,7 +10,19 @@ function Main() {
     GoblinArcher(),
   ]);
 
-  return <CardHand cards={cards.filter(filterByOwner('us'))} />;
+  return (
+    <main
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        height: '100vh',
+      }}
+    >
+      <CardHand cards={cards} owner="enemy" />
+      <CardHand cards={cards} owner="player" />
+    </main>
+  );
 }
 
 createRoot(document.getElementById('root')!).render(<Main />);

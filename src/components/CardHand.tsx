@@ -1,11 +1,14 @@
-import { Card } from '../ecs/cards';
+import React from 'react';
+import { Card, filterByOwner } from '../ecs/cards';
+import { CardFace } from './Card';
 
 export interface CardHandProps {
   cards: Card[];
+  owner: Card['owner'];
 }
 
-export const CardHand = ({ cards }: CardHandProps) => {
-  console.log('cards', cards);
+export const CardHand = ({ cards, owner }: CardHandProps) => {
+  const filtered = cards.filter(filterByOwner(owner));
 
   return (
     <div
@@ -16,8 +19,14 @@ export const CardHand = ({ cards }: CardHandProps) => {
         alignItems: 'center',
       }}
     >
-      {cards.map((card, i) => (
-        <div key={i}>{card.name}</div>
+      {filtered.map((card, i) => (
+        <CardFace
+          key={i}
+          card={card}
+          style={{
+            margin: '10px',
+          }}
+        />
       ))}
     </div>
   );

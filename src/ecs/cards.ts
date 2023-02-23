@@ -26,7 +26,18 @@ export const Hero = () =>
     image: 'hero.png',
     attack: 2,
     health: 5,
-    owner: 'us',
+    owner: 'player',
+  });
+
+export const HeroArcher = () =>
+  new Card({
+    id: uuid(),
+    name: 'Hero Archer',
+    description: 'A hero archer',
+    image: 'hero-archer.png',
+    attack: 4,
+    health: 3,
+    owner: 'player',
   });
 
 export const Goblin = () =>
