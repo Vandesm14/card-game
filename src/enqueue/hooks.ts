@@ -12,20 +12,6 @@ export const useEnqueue = () => {
   return { queue, setQueue, emit };
 };
 
-export const eatItems = (filter: (item: QueueItem) => boolean) => {
-  const { queue, setQueue } = useEnqueue();
-  const [items, setItems] = React.useState<QueueItem[]>([]);
-
-  React.useEffect(() => {
-    const next = queue.filter(filter);
-
-    setItems(next);
-    setQueue(queue.filter((item) => !next.includes(item)));
-  }, [queue]);
-
-  return items;
-};
-
 export const eatItem = (
   filter: (item: QueueItem) => boolean
 ): QueueItem | null => {
