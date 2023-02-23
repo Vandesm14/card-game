@@ -1,4 +1,3 @@
-import React from 'react';
 import { Card, filterByOwner } from '../cards';
 import { flex } from '../styles';
 import { CardFace } from './Card';

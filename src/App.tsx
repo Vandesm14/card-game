@@ -1,7 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { CardHand } from './components/CardHand';
-import { Card, filterByOwner, Goblin, GoblinArcher, Hero } from './cards';
+import { Card, Goblin, GoblinArcher, Hero } from './cards';
 import { flex } from './styles';
 import { ActionMenu } from './components/ActionMenu';
 
