@@ -17,7 +17,7 @@ export const CardHand = ({ cards }: CardHandProps) => {
       }}
     >
       {cards.map((card, i) => (
-        <div key={i}>{card.name}</div>
+        <div key={i}>{card.info.name}</div>
       ))}
     </div>
   );

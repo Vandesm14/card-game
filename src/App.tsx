@@ -1,29 +1,19 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { CardHand } from './components/CardHand';
-import { Card } from './ecs/components';
-import {
-  Goblin,
-  GoblinArcher,
-  Hero,
-  ownCardsQuery,
-  useEngine,
-  useQuery,
-} from './ecs/cards';
 
 function App() {
-  const engine = useEngine();
+  // const engine = useEngine();
 
-  React.useEffect(() => {
-    engine.addEntity(Hero);
-    engine.addEntity(Hero);
-    engine.addEntity(Hero);
-    engine.addEntity(Goblin);
-    engine.addEntity(Goblin);
-    engine.addEntity(GoblinArcher);
-  }, []);
+  // React.useEffect(() => {
+  //   engine.addEntity(Hero);
+  //   engine.addEntity(Hero);
+  //   engine.addEntity(Hero);
+  //   engine.addEntity(Goblin);
+  //   engine.addEntity(Goblin);
+  //   engine.addEntity(GoblinArcher);
+  // }, []);
 
-  const query = useQuery(engine, ownCardsQuery);
+  // const query = useQuery(engine, ownCardsQuery);
 
   return (
     // <CardHand
