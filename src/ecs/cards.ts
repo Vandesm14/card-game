@@ -1,81 +1,52 @@
-import { Entity, Query } from 'tick-knock';
-import { Info, Attack, Health, Owner } from './components';
+export class Card {
+  public readonly id!: string;
+  public readonly name!: string;
+  public readonly description!: string;
+  public readonly image!: string;
 
-export const ownCardsQuery = new Query(
-  (entity) => entity.has(Owner) && entity.get(Owner)!.owner === 'us'
-);
+  public readonly attack!: number;
+  public readonly health!: number;
 
-export const Hero = new Entity()
-  .add(
-    new Info({
-      id: 'hero',
-      name: 'Hero',
-      description: 'The hero of the game',
-      image: 'hero.png',
-    })
-  )
-  .add(
-    new Attack({
-      attack: 1,
-    })
-  )
-  .add(
-    new Health({
-      health: 5,
-    })
-  )
-  .add(
-    new Owner({
-      owner: 'us',
-    })
-  );
+  public owner!: string;
 
-export const Goblin = new Entity()
-  .add(
-    new Info({
-      id: 'goblin',
-      name: 'Goblin',
-      description: 'A goblin',
-      image: 'goblin.png',
-    })
-  )
-  .add(
-    new Attack({
-      attack: 2,
-    })
-  )
-  .add(
-    new Health({
-      health: 2,
-    })
-  )
-  .add(
-    new Owner({
-      owner: 'enemy',
-    })
-  );
+  constructor(self: Card) {
+    Object.assign(this, self);
+  }
+}
 
-export const GoblinArcher = new Entity()
-  .add(
-    new Info({
-      id: 'goblin-archer',
-      name: 'Goblin Archer',
-      description: 'A goblin archer',
-      image: 'goblin-archer.png',
-    })
-  )
-  .add(
-    new Attack({
-      attack: 3,
-    })
-  )
-  .add(
-    new Health({
-      health: 1,
-    })
-  )
-  .add(
-    new Owner({
-      owner: 'enemy',
-    })
-  );
+export const filterByOwner = (owner: string) => (card: Card) =>
+  card.owner === owner;
+
+export const uuid = () => Math.random().toString(36).substring(2, 15);
+export const Hero = () =>
+  new Card({
+    id: uuid(),
+    name: 'Hero',
+    description: 'A hero',
+    image: 'hero.png',
+    attack: 2,
+    health: 5,
+    owner: 'us',
+  });
+
+export const Goblin = () =>
+  new Card({
+    id: uuid(),
+    name: 'Goblin',
+    description: 'A goblin',
+    image: 'goblin.png',
+    attack: 2,
+    health: 2,
+    owner: 'enemy',
+  });
+
+export const GoblinArcher = () =>
+  new Card({
+    id: uuid(),
+    name: 'Goblin Archer',
+    description: 'A goblin archer',
+    image: 'goblin-archer.png',
+    attack: 3,
+    health: 1,
+    owner: 'enemy',
+  });

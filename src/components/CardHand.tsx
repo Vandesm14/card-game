@@ -1,11 +1,11 @@
-import { Card } from '../ecs/components';
+import { Card } from '../ecs/cards';
 
 export interface CardHandProps {
   cards: Card[];
 }
 
 export const CardHand = ({ cards }: CardHandProps) => {
-  console.log({ cards });
+  console.log('cards', cards);
 
   return (
     <div
@@ -17,7 +17,7 @@ export const CardHand = ({ cards }: CardHandProps) => {
       }}
     >
       {cards.map((card, i) => (
-        <div key={i}>{card.info.name}</div>
+        <div key={i}>{card.name}</div>
       ))}
     </div>
   );
