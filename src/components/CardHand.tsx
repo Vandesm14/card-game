@@ -6,20 +6,24 @@ export interface CardHandProps {
   cards: Card[];
   owner: Card['owner'];
   title?: string;
+  onSelectionChange?: (card: Card | null) => void;
+  selectedCard?: Card | null;
 }
 
-export const CardHand = ({ cards, owner, title }: CardHandProps) => {
-  const [selectedCard, setSelectedCard] = React.useState<Card | null>(null);
-
+export const CardHand = ({
+  cards,
+  owner,
+  title,
+  onSelectionChange,
+  selectedCard,
+}: CardHandProps) => {
   const filtered = cards.filter(filterByOwner(owner));
 
   const cardSelectedStyle = {
     borderColor: 'yellow',
   };
 
-  const handleCardClick = (card: Card) => {
-    setSelectedCard((prev) => (prev === card ? null : card));
-  };
+  const handleCardClick = (card: Card) => onSelectionChange?.(card);
 
   return (
     <div
