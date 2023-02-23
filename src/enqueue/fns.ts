@@ -1,5 +1,4 @@
 import { QueueItem } from './types';
 
-export const clearExpired = (queue: QueueItem[]) => {
-  return queue.filter((item) => item.expires > Date.now());
-};
+export const isNotExpired = (item: QueueItem) =>
+  item.expires ? item.expires > Date.now() : true;

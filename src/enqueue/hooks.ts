@@ -18,12 +18,12 @@ export const eatItems = (filter: (item: QueueItem) => boolean) => {
 
   React.useEffect(() => {
     const next = queue.filter(filter);
-    setItems(next);
-  }, [queue]);
 
-  React.useEffect(() => {
-    setQueue(queue.filter((item) => !items.includes(item)));
-  }, [items]);
+    console.log('updating queue', { queue, next });
+
+    setItems(next);
+    setQueue(queue.filter((item) => !next.includes(item)));
+  }, [queue]);
 
   return items;
 };

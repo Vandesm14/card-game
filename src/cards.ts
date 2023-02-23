@@ -15,11 +15,12 @@ export class Card {
   }
 }
 
-export const filterByOwner = (owner: string) => (card: Card) =>
-  card.owner === owner;
+export const isOwner = (owner: string) => (card: Card) => card.owner === owner;
+export const isAlive = (card: Card) => card.health > 0;
+export const byId = (id: string) => (card: Card) => card.id === id;
 
 export const uuid = () => Math.random().toString(36).substring(2, 15);
-export const Hero = () =>
+export const Hero = (init?: Partial<Card>) =>
   new Card({
     id: uuid(),
     name: 'Hero',
@@ -29,9 +30,10 @@ export const Hero = () =>
     defense: 3,
     health: 5,
     owner: 'player',
+    ...init,
   });
 
-export const HeroArcher = () =>
+export const HeroArcher = (init?: Partial<Card>) =>
   new Card({
     id: uuid(),
     name: 'Hero Archer',
@@ -41,9 +43,10 @@ export const HeroArcher = () =>
     defense: 1,
     health: 4,
     owner: 'player',
+    ...init,
   });
 
-export const Goblin = () =>
+export const Goblin = (init?: Partial<Card>) =>
   new Card({
     id: uuid(),
     name: 'Goblin',
@@ -53,9 +56,10 @@ export const Goblin = () =>
     defense: 3,
     health: 5,
     owner: 'enemy',
+    ...init,
   });
 
-export const GoblinArcher = () =>
+export const GoblinArcher = (init?: Partial<Card>) =>
   new Card({
     id: uuid(),
     name: 'Goblin Archer',
@@ -65,4 +69,5 @@ export const GoblinArcher = () =>
     defense: 1,
     health: 4,
     owner: 'enemy',
+    ...init,
   });

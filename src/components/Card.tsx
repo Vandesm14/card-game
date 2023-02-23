@@ -11,20 +11,18 @@ interface CardFaceProps extends StyledComponentProps {
 }
 
 export const CardFace = ({ card, style, onClick }: CardFaceProps) => {
-  const [showMarker, setShowMarker] = React.useState(false);
-
-  const { id } = card;
-
-  const item = eatItem(
-    (item) => item.data.type === 'hit' && item.data.id === id
-  );
+  const [marker, setMarker] = React.useState<string | null>();
+  const item = eatItem((item) => item.data.id === card.id);
 
   const borderStyle = item ? '2px solid red' : '2px solid black';
 
+  const isHit = item?.data.type === 'hit';
+  const isKill = item?.data.type === 'kill';
+
   React.useEffect(() => {
-    if (item && !showMarker) {
-      setShowMarker(true);
-      setTimeout(() => setShowMarker(false), 1000);
+    if (item && !marker) {
+      setMarker(item.data.text);
+      setTimeout(() => setMarker(null), 1000);
     }
   }, [item]);
 
@@ -43,7 +41,7 @@ export const CardFace = ({ card, style, onClick }: CardFaceProps) => {
       }}
       onClick={() => onClick?.(card)}
     >
-      <Marker text="Hit!" color="red" show={showMarker} />
+      <Marker text={marker ?? ''} color="red" show={Boolean(marker)} />
       <h2 style={{ margin: 0 }} title={card.description}>
         {card.name}
       </h2>

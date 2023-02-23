@@ -1,12 +1,12 @@
-import React from 'react';
+import { StyledComponentProps } from '../compose/styles';
 
-interface MarkerProps {
+interface MarkerProps extends StyledComponentProps {
   text: string;
   color: string;
   show: boolean;
 }
 
-export const Marker = ({ text, color, show }: MarkerProps) => {
+export const Marker = ({ text, color, show, style }: MarkerProps) => {
   return show ? (
     <div
       style={{
@@ -18,6 +18,7 @@ export const Marker = ({ text, color, show }: MarkerProps) => {
         justifyContent: 'center',
         transition: 'top 0.3s',
         color: color,
+        ...style,
       }}
     >
       <h1

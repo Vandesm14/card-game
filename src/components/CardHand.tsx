@@ -1,4 +1,4 @@
-import { Card, filterByOwner } from '../cards';
+import { Card, isOwner } from '../cards';
 import { flex, StyledComponentProps } from '../compose/styles';
 import { CardFace } from './Card';
 
@@ -7,7 +7,7 @@ export interface CardHandProps extends StyledComponentProps {
   owner: Card['owner'];
   title?: string;
   onSelectionChange?: (card: Card | null) => void;
-  selectedCard?: Card | null;
+  selectedCardId?: Card['id'] | null;
 }
 
 export const CardHand = ({
@@ -15,13 +15,13 @@ export const CardHand = ({
   owner,
   title,
   onSelectionChange,
-  selectedCard,
+  selectedCardId,
   style,
 }: CardHandProps) => {
-  const filtered = cards.filter(filterByOwner(owner));
+  const filtered = cards.filter(isOwner(owner));
 
   const cardSelectedStyle = {
-    borderColor: 'yellow',
+    border: '2px solid yellow',
   };
 
   const handleCardClick = (card: Card) => onSelectionChange?.(card);
@@ -49,7 +49,7 @@ export const CardHand = ({
             onClick={handleCardClick}
             style={{
               margin: '10px',
-              ...(selectedCard === card ? cardSelectedStyle : {}),
+              ...(selectedCardId === card.id ? cardSelectedStyle : {}),
             }}
           />
         ))}
