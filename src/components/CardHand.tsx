@@ -8,6 +8,7 @@ export interface CardHandProps extends StyledComponentProps {
   title?: string;
   onSelectionChange?: (card: Card | null) => void;
   selectedCardId?: Card['id'] | null;
+  turn?: 'player' | 'enemy';
 }
 
 export const CardHand = ({
@@ -17,6 +18,7 @@ export const CardHand = ({
   onSelectionChange,
   selectedCardId,
   style,
+  turn,
 }: CardHandProps) => {
   const filtered = cards.filter(isOwner(owner));
 
@@ -32,6 +34,7 @@ export const CardHand = ({
         ...flex.col,
         justifyContent: 'flex-start',
         alignItems: 'center',
+        ...(turn === owner ? { backgroundColor: '#fff4' } : {}),
         ...style,
       }}
     >

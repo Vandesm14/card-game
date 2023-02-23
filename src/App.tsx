@@ -32,6 +32,7 @@ function Main() {
     Goblin(),
     GoblinArcher(),
   ]);
+  const [turn, setTurn] = React.useState<'player' | 'enemy'>('player');
 
   const handleSelectionEnemyChange = (card: Card | null) => {
     setSelectedEnemyId(card?.id ?? null);
@@ -50,50 +51,67 @@ function Main() {
     setSelectedPlayerId(null);
   };
 
-  const attack = () => {
+  const attack = (withTurn = turn) => {
     if (!hasSelectedFromBoth) return;
 
     const enemyCard = cards.find(byId(selectedEnemyId));
     const playerCard = cards.find(byId(selectedPlayerId));
     if (!enemyCard || !playerCard) return;
 
-    // Calculate the outcome of the attack
-    const shouldHitEnemy = chance(1 / 3);
-    const shouldHitPlayer = chance(1 / 3);
-
     const newEnemyCard = {
       ...enemyCard,
-      health: enemyCard.health - (shouldHitEnemy ? playerCard.attack : 0),
     };
 
     const newPlayerCard = {
       ...playerCard,
-      health: playerCard.health - (shouldHitPlayer ? enemyCard.attack : 0),
     };
 
-    // Emit a marker event to show a hit or kill
-    if (shouldHitEnemy)
-      emit({
-        data: {
-          resource: 'card',
-          text: isAlive(newEnemyCard) ? 'hit' : 'kill',
-          id: enemyCard.id,
-        },
-      });
-    if (shouldHitPlayer)
-      emit({
-        data: {
-          resource: 'card',
-          text: isAlive(newPlayerCard) ? 'hit' : 'kill',
-          id: playerCard.id,
-        },
-      });
+    const hitChance = chance(1 / 3);
 
-    // Deselect killed cards
-    if (!isAlive(newEnemyCard)) setSelectedEnemyId(null);
-    if (!isAlive(newPlayerCard)) setSelectedPlayerId(null);
+    if (withTurn === 'player') {
+      if (hitChance) {
+        emit({
+          data: {
+            resource: 'card',
+            text: 'hit',
+            id: enemyCard.id,
+          },
+        });
+        newEnemyCard.health -= playerCard.attack;
+      } else {
+        emit({
+          data: {
+            resource: 'card',
+            text: 'miss',
+            id: enemyCard.id,
+          },
+        });
+      }
 
-    // Update the cards
+      if (!isAlive(newEnemyCard)) setSelectedEnemyId(null);
+    } else if (withTurn === 'enemy') {
+      if (hitChance) {
+        emit({
+          data: {
+            resource: 'card',
+            text: 'hit',
+            id: playerCard.id,
+          },
+        });
+        newPlayerCard.health -= enemyCard.attack;
+      } else {
+        emit({
+          data: {
+            resource: 'card',
+            text: 'miss',
+            id: playerCard.id,
+          },
+        });
+      }
+
+      if (!isAlive(newPlayerCard)) setSelectedPlayerId(null);
+    }
+
     const newCards = cards.map((card) => {
       if (card.id === enemyCard.id) return newEnemyCard;
       if (card.id === playerCard.id) return newPlayerCard;
@@ -102,11 +120,18 @@ function Main() {
 
     setCards(newCards);
 
+    const newTurn = withTurn === 'player' ? 'enemy' : 'player';
+
     // Wait a second and remove dead cards (so we can show the kill marker)
-    setTimeout(
-      () => setCards((oldCards) => oldCards.filter(isAlive)),
-      1 * 1000
-    );
+    setTimeout(() => {
+      setCards((oldCards) => oldCards.filter(isAlive));
+      setTurn(newTurn);
+
+      // If it's the enemy's turn, attack
+      if (newTurn === 'enemy') {
+        attack(newTurn);
+      }
+    }, 1 * 1000);
   };
 
   const handleActionSelect = (action: string) => {
@@ -128,6 +153,7 @@ function Main() {
         title="Enemy"
         onSelectionChange={handleSelectionEnemyChange}
         selectedCardId={selectedEnemyId}
+        turn={turn}
       />
       <div
         style={{
@@ -141,6 +167,7 @@ function Main() {
           title="Player"
           onSelectionChange={handleSelectionPlayerChange}
           selectedCardId={selectedPlayerId}
+          turn={turn}
           style={{
             width: '100%',
           }}
