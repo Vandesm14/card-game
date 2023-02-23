@@ -19,7 +19,7 @@ function Main() {
         height: '100vh',
       }}
     >
-      <CardHand cards={cards} owner="enemy" />
+      <CardHand cards={cards} owner="enemy" title="Enemy" />
       <CardHand cards={cards} owner="player" />
     </main>
   );

@@ -3,9 +3,10 @@ import { Card } from '../ecs/cards';
 interface CardFaceProps {
   card: Card;
   style?: React.CSSProperties;
+  onClick?: (card: Card) => void;
 }
 
-export const CardFace = ({ card, style }: CardFaceProps) => {
+export const CardFace = ({ card, style, onClick }: CardFaceProps) => {
   return (
     <div
       style={{
@@ -15,13 +16,14 @@ export const CardFace = ({ card, style }: CardFaceProps) => {
         alignItems: 'center',
         width: '150px',
         height: '200px',
-        border: '1px solid black',
+        border: '2px solid black',
         borderRadius: '5px',
         padding: '10px',
         backgroundColor: 'white',
         color: 'black',
         ...(style ?? {}),
       }}
+      onClick={() => onClick?.(card)}
     >
       <b>{card.name}</b>
       <p>{card.description}</p>
