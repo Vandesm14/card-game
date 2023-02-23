@@ -1,9 +1,15 @@
-interface ActionMenuProps {
+import { StyledComponentProps } from '../styles';
+
+interface ActionMenuProps extends StyledComponentProps {
   actions: string[];
   onActionClick: (action: string) => void;
 }
 
-export const ActionMenu = ({ actions, onActionClick }: ActionMenuProps) => {
+export const ActionMenu = ({
+  actions,
+  onActionClick,
+  style,
+}: ActionMenuProps) => {
   return (
     <div
       style={{
@@ -11,6 +17,7 @@ export const ActionMenu = ({ actions, onActionClick }: ActionMenuProps) => {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        ...style,
       }}
     >
       {actions.map((action, i) => (

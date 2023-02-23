@@ -18,3 +18,8 @@ export const flex = {
   row: flexRow,
   center: flexCenter,
 };
+
+export interface StyledComponentProps {
+  className?: string;
+  style?: React.CSSProperties;
+}

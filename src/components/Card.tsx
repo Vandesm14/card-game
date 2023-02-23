@@ -1,9 +1,8 @@
 import { Card } from '../cards';
-import { flex } from '../styles';
+import { flex, StyledComponentProps } from '../styles';
 
-interface CardFaceProps {
+interface CardFaceProps extends StyledComponentProps {
   card: Card;
-  style?: React.CSSProperties;
   onClick?: (card: Card) => void;
 }
 

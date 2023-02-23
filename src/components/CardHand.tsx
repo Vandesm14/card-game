@@ -1,8 +1,8 @@
 import { Card, filterByOwner } from '../cards';
-import { flex } from '../styles';
+import { flex, StyledComponentProps } from '../styles';
 import { CardFace } from './Card';
 
-export interface CardHandProps {
+export interface CardHandProps extends StyledComponentProps {
   cards: Card[];
   owner: Card['owner'];
   title?: string;
@@ -16,6 +16,7 @@ export const CardHand = ({
   title,
   onSelectionChange,
   selectedCard,
+  style,
 }: CardHandProps) => {
   const filtered = cards.filter(filterByOwner(owner));
 
@@ -31,6 +32,7 @@ export const CardHand = ({
         ...flex.col,
         justifyContent: 'flex-start',
         alignItems: 'center',
+        ...style,
       }}
     >
       <h2>{title}</h2>

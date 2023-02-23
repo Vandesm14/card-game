@@ -34,6 +34,15 @@ function Main() {
     setSelectedPlayerCard(null);
   };
 
+  const attack = () => {
+    if (!selectedEnemyCard || !selectedPlayerCard) return;
+
+    const enemyCard = selectedEnemyCard;
+    const playerCard = selectedPlayerCard;
+
+    // const;
+  };
+
   const handleActionSelect = (action: string) => {
     if (action === 'cancel') clearSelection();
   };
@@ -56,16 +65,28 @@ function Main() {
       <div
         style={{
           ...flex.row,
-          justifyContent: 'space-between',
+          ...flex.center,
         }}
       >
         <CardHand
           cards={cards}
           owner="player"
+          title="Player"
           onSelectionChange={handleSelectionPlayerChange}
           selectedCard={selectedPlayerCard}
+          style={{
+            width: '100%',
+          }}
         />
-        <ActionMenu actions={actions} onActionClick={handleActionSelect} />
+        <ActionMenu
+          actions={actions}
+          onActionClick={handleActionSelect}
+          style={{
+            marginRight: '10px',
+            position: 'absolute',
+            right: '10px',
+          }}
+        />
       </div>
     </main>
   );
