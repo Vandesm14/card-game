@@ -1,4 +1,4 @@
-import { StyledComponentProps } from '../styles';
+import { StyledComponentProps } from '../compose/styles';
 
 interface ActionMenuProps extends StyledComponentProps {
   actions: string[];

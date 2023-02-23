@@ -1,5 +1,5 @@
 import { Card, filterByOwner } from '../cards';
-import { flex, StyledComponentProps } from '../styles';
+import { flex, StyledComponentProps } from '../compose/styles';
 import { CardFace } from './Card';
 
 export interface CardHandProps extends StyledComponentProps {
