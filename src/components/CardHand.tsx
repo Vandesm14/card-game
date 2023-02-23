@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, filterByOwner } from '../ecs/cards';
+import { Card, filterByOwner } from '../cards';
 import { CardFace } from './Card';
 
 export interface CardHandProps {

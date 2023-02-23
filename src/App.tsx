@@ -1,7 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { CardHand } from './components/CardHand';
-import { Card, filterByOwner, Goblin, GoblinArcher, Hero } from './ecs/cards';
+import { Card, filterByOwner, Goblin, GoblinArcher, Hero } from './cards';
 
 function Main() {
   const [selectedEnemyCard, setSelectedEnemyCard] = React.useState<Card | null>(

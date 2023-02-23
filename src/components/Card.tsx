@@ -1,4 +1,4 @@
-import { Card } from '../ecs/cards';
+import { Card } from '../cards';
 
 interface CardFaceProps {
   card: Card;
