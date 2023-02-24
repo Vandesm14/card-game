@@ -8,6 +8,7 @@ import { useGame } from '../game';
 import { shallow } from 'zustand/shallow';
 import { ActionMenu } from './ActionMenu';
 import { match } from '../match';
+import { ProgressBar } from '@blueprintjs/core';
 
 interface CardFaceProps extends StyledComponentProps {
   card: Card;
@@ -16,13 +17,14 @@ interface CardFaceProps extends StyledComponentProps {
 
 export const CardFace = ({ card, style, onClick }: CardFaceProps) => {
   const { emit } = useEnqueue();
-  const { isDefender, isAttacker, isOurTurn, setDefender, attack } = useGame(
+  const { isDefender, isAttacker, isOurTurn, isAttacking, attack } = useGame(
     (state) => ({
       isDefender: state.defender === card.id,
       isAttacker: state.attacker === card.id,
       isOurTurn: card.owner === 'enemy' && state.turn === 'player',
       setDefender: state.setDefender,
       attack: state.attack,
+      isAttacking: !!state.attacker,
     }),
     shallow
   );
@@ -30,25 +32,24 @@ export const CardFace = ({ card, style, onClick }: CardFaceProps) => {
   const [marker, setMarker] = React.useState<string | null>();
   const item = eatItem((item) => item.data.id === card.id);
 
-  const battleStyle =
-    match<any, React.CSSProperties>(true, [
-      {
-        check: () => isDefender,
-        use: { backgroundColor: '#ffaaaa' },
-      },
-      {
-        check: () => isAttacker,
-        use: { backgroundColor: '#aaffaa' },
-      },
-    ]) ?? {};
+  const battleStyle = match<any, React.CSSProperties>(true, [
+    {
+      check: isDefender || isAttacker,
+      use: { backgroundColor: '#fff' },
+    },
+    {
+      check: isAttacking,
+      use: { backgroundColor: '#aaaaaa' },
+    },
+  ]);
 
-  const borderStyle: React.CSSProperties =
+  const ownerStyle: React.CSSProperties =
     card.owner === 'player'
       ? {
-          border: '2px solid blue',
+          color: 'blue',
         }
       : {
-          border: '2px solid red',
+          color: 'red',
         };
 
   React.useEffect(() => {
@@ -58,7 +59,7 @@ export const CardFace = ({ card, style, onClick }: CardFaceProps) => {
     }
   }, [item]);
 
-  const actions = isOurTurn ? ['attack'] : [];
+  const actions = isOurTurn && !isAttacking ? ['attack'] : [];
   const handleActionClick = (action: string) => {
     if (action === 'attack') {
       attack(card.id, emit);
@@ -77,7 +78,6 @@ export const CardFace = ({ card, style, onClick }: CardFaceProps) => {
         color: 'black',
         position: 'relative',
         ...battleStyle,
-        ...borderStyle,
         ...(style ?? {}),
       }}
       onClick={() => onClick?.(card)}
@@ -85,15 +85,21 @@ export const CardFace = ({ card, style, onClick }: CardFaceProps) => {
       {card.owner === 'player' ? (
         <Marker text={marker ?? ''} color="red" show={Boolean(marker)} />
       ) : null}
-      <h2 style={{ margin: 0 }} title={card.description}>
+      <h2 style={{ margin: 0, ...ownerStyle }} title={card.description}>
         {card.name}
       </h2>
       <P>
         <b>HP:</b> {card.health}
       </P>
       <P>
-        <b>Atk:</b> {card.attack}
+        <b>ATK:</b> {card.attack}
       </P>
+      <ProgressBar
+        animate={false}
+        stripes={false}
+        value={card.health / card.startHealth}
+        intent="primary"
+      />
       <ActionMenu
         actions={actions}
         onActionClick={handleActionClick}

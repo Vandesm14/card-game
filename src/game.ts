@@ -42,7 +42,7 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 export const useGame = create<Game>((set, get) => ({
   cards: [...pickRandomCards(4, 'player'), ...pickRandomCards(4, 'enemy')],
   turn: 'player',
-  attacker: 'player',
+  attacker: undefined,
   defender: undefined,
 
   setCards: (cards) => set({ cards }),
