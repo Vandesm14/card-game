@@ -15,8 +15,8 @@ export class Card {
   }
 }
 
-export const isOwner = (owner: string) => (card: Card) => card.owner === owner;
 export const isAlive = (card: Card) => card.health > 0;
+export const byOwner = (owner: string) => (card: Card) => card.owner === owner;
 export const byId = (id: string) => (card: Card) => card.id === id;
 
 export const uuid = () => Math.random().toString(36).substring(2, 15);

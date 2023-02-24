@@ -4,6 +4,10 @@ import { P } from '../compose/P';
 import { flex, StyledComponentProps } from '../compose/styles';
 import { eatItem } from '../enqueue/hooks';
 import { Marker } from './Marker';
+import { useGame } from '../game';
+import { shallow } from 'zustand/shallow';
+import { ActionMenu } from './ActionMenu';
+import { match } from '../match';
 
 interface CardFaceProps extends StyledComponentProps {
   card: Card;
@@ -11,13 +15,30 @@ interface CardFaceProps extends StyledComponentProps {
 }
 
 export const CardFace = ({ card, style, onClick }: CardFaceProps) => {
+  const { isDefender, isAttacker, isOurTurn, setDefender } = useGame(
+    (state) => ({
+      isDefender: state.defender === card.id,
+      isAttacker: state.attacker === card.id,
+      isOurTurn: card.owner === 'enemy' && state.turn === 'player',
+      setDefender: state.setDefender,
+    }),
+    shallow
+  );
+
   const [marker, setMarker] = React.useState<string | null>();
   const item = eatItem((item) => item.data.id === card.id);
 
-  const borderStyle = item ? '2px solid red' : '2px solid black';
-
-  const isHit = item?.data.type === 'hit';
-  const isKill = item?.data.type === 'kill';
+  const battleStyle =
+    match<any, React.CSSProperties>(true, [
+      {
+        check: () => isDefender,
+        use: { backgroundColor: '#ffaaaa' },
+      },
+      {
+        check: () => isAttacker,
+        use: { backgroundColor: '#aaffaa' },
+      },
+    ]) ?? {};
 
   React.useEffect(() => {
     if (item && !marker) {
@@ -26,18 +47,26 @@ export const CardFace = ({ card, style, onClick }: CardFaceProps) => {
     }
   }, [item]);
 
+  const actions = isOurTurn ? ['attack'] : [];
+  const handleActionClick = (action: string) => {
+    if (action === 'attack') {
+      setDefender(card.id);
+    }
+  };
+
   return (
     <div
       style={{
         ...flex.col,
         width: '150px',
         height: '200px',
-        border: borderStyle,
         borderRadius: '5px',
         padding: '10px',
         backgroundColor: 'white',
         color: 'black',
+        ...battleStyle,
         ...(style ?? {}),
+        position: 'relative',
       }}
       onClick={() => onClick?.(card)}
     >
@@ -51,6 +80,11 @@ export const CardFace = ({ card, style, onClick }: CardFaceProps) => {
       <P>
         <b>Atk:</b> {card.attack}
       </P>
+      <ActionMenu
+        actions={actions}
+        onActionClick={handleActionClick}
+        style={{ bottom: '10px', position: 'absolute', width: '100%', left: 0 }}
+      />
     </div>
   );
 };

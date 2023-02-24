@@ -1,32 +1,22 @@
-import { Card, isOwner } from '../cards';
+import { Card, byOwner } from '../cards';
 import { flex, StyledComponentProps } from '../compose/styles';
+import { useGame } from '../game';
 import { CardFace } from './Card';
+import { shallow } from 'zustand/shallow';
 
 export interface CardHandProps extends StyledComponentProps {
-  cards: Card[];
   owner: Card['owner'];
   title?: string;
-  onSelectionChange?: (card: Card | null) => void;
-  selectedCardId?: Card['id'] | null;
-  turn?: 'player' | 'enemy';
 }
 
-export const CardHand = ({
-  cards,
-  owner,
-  title,
-  onSelectionChange,
-  selectedCardId,
-  style,
-  turn,
-}: CardHandProps) => {
-  const filtered = cards.filter(isOwner(owner));
-
-  const cardSelectedStyle = {
-    border: '2px solid yellow',
-  };
-
-  const handleCardClick = (card: Card) => onSelectionChange?.(card);
+export const CardHand = ({ owner, title, style }: CardHandProps) => {
+  const { cards, turn } = useGame(
+    (state) => ({
+      cards: state.cards.filter(byOwner(owner)),
+      turn: state.turn,
+    }),
+    shallow
+  );
 
   return (
     <div
@@ -45,14 +35,12 @@ export const CardHand = ({
           ...flex.center,
         }}
       >
-        {filtered.map((card, i) => (
+        {cards.map((card, i) => (
           <CardFace
             key={i}
             card={card}
-            onClick={handleCardClick}
             style={{
               margin: '10px',
-              ...(selectedCardId === card.id ? cardSelectedStyle : {}),
             }}
           />
         ))}
