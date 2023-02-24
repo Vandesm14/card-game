@@ -2,10 +2,11 @@ import React from 'react';
 import { EnqueueContext } from './context';
 import { QueueItem } from './types';
 
+export type Emitter = (data: any, expires?: number) => void;
 export const useEnqueue = () => {
   const { queue, setQueue } = React.useContext(EnqueueContext);
 
-  const emit = (data: any, expires?: number) => {
+  const emit: Emitter = (data, expires) => {
     setQueue([...queue, { id: Math.random().toString(), data, expires }]);
   };
 

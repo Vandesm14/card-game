@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from '../cards';
 import { P } from '../compose/P';
 import { flex, StyledComponentProps } from '../compose/styles';
-import { eatItem } from '../enqueue/hooks';
+import { eatItem, useEnqueue } from '../enqueue/hooks';
 import { Marker } from './Marker';
 import { useGame } from '../game';
 import { shallow } from 'zustand/shallow';
@@ -15,12 +15,14 @@ interface CardFaceProps extends StyledComponentProps {
 }
 
 export const CardFace = ({ card, style, onClick }: CardFaceProps) => {
-  const { isDefender, isAttacker, isOurTurn, setDefender } = useGame(
+  const { emit } = useEnqueue();
+  const { isDefender, isAttacker, isOurTurn, setDefender, attack } = useGame(
     (state) => ({
       isDefender: state.defender === card.id,
       isAttacker: state.attacker === card.id,
       isOurTurn: card.owner === 'enemy' && state.turn === 'player',
       setDefender: state.setDefender,
+      attack: state.attack,
     }),
     shallow
   );
@@ -59,7 +61,7 @@ export const CardFace = ({ card, style, onClick }: CardFaceProps) => {
   const actions = isOurTurn ? ['attack'] : [];
   const handleActionClick = (action: string) => {
     if (action === 'attack') {
-      setDefender(card.id);
+      attack(card.id, emit);
     }
   };
 
