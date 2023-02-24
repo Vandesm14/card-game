@@ -27,6 +27,8 @@ export interface Game {
 
   attack: (defender: Card['id'], emit: Emitter) => void;
   doAITurn: (emit: Emitter) => void;
+  checkWin: () => Owner | 'draw' | undefined;
+  reset: () => void;
 }
 
 const pickRandomCards = (count: number, owner: Owner): Card[] => {
@@ -38,12 +40,17 @@ const pickRandomCards = (count: number, owner: Owner): Card[] => {
   return cards;
 };
 
+const initialGameState: Pick<Game, 'cards' | 'turn' | 'attacker' | 'defender'> =
+  {
+    cards: [...pickRandomCards(4, 'player'), ...pickRandomCards(4, 'enemy')],
+    turn: 'player',
+    attacker: undefined,
+    defender: undefined,
+  };
+
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 export const useGame = create<Game>((set, get) => ({
-  cards: [...pickRandomCards(4, 'player'), ...pickRandomCards(4, 'enemy')],
-  turn: 'player',
-  attacker: undefined,
-  defender: undefined,
+  ...initialGameState,
 
   setCards: (cards) => set({ cards }),
   addCard: (card) => set((state) => ({ cards: [...state.cards, card] })),
@@ -71,6 +78,10 @@ export const useGame = create<Game>((set, get) => ({
     setDefender(defender);
 
     if (!turn || !defender) return;
+
+    // Sleep for a sec to give the UI time to
+    // move everything around
+    await sleep(50);
 
     const defenderCard = cards.find(byId(defender));
     const attackerCards = cards.filter(byOwner(turn));
@@ -133,7 +144,6 @@ export const useGame = create<Game>((set, get) => ({
     get().flipTurn();
     get().clearBattle();
   },
-
   doAITurn: (emit) => {
     const playerCards = get().getCardsByOwner('player');
     const defender =
@@ -141,6 +151,16 @@ export const useGame = create<Game>((set, get) => ({
 
     get().attack(defender.id, emit);
   },
+  checkWin: () => {
+    const playerCards = get().getCardsByOwner('player');
+    const enemyCards = get().getCardsByOwner('enemy');
+
+    if (playerCards.length === 0 && enemyCards.length === 0) return 'draw';
+    if (playerCards.length === 0) return 'enemy';
+    if (enemyCards.length === 0) return 'player';
+    return undefined;
+  },
+  reset: () => set(initialGameState),
 }));
 
 export const canAttack = (game: Game): boolean => {

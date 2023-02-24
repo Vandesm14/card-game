@@ -6,7 +6,7 @@ export class Card {
 
   public attack!: number;
   public health!: number;
-  public startHealth!: number;
+  public maxHealth!: number;
 
   public owner!: string;
 
@@ -28,7 +28,7 @@ const Soldier = (init: WithOwner) =>
     name: 'Soldier',
     attack: 2,
     health: 2,
-    startHealth: 2,
+    maxHealth: 2,
     ...init,
   });
 
@@ -38,7 +38,7 @@ const Archer = (init: WithOwner) =>
     name: 'Archer',
     attack: 4,
     health: 1,
-    startHealth: 1,
+    maxHealth: 1,
     ...init,
   });
 
@@ -48,7 +48,7 @@ const Brute = (init: WithOwner) =>
     name: 'Brute',
     attack: 1,
     health: 5,
-    startHealth: 5,
+    maxHealth: 5,
     ...init,
   });
 
@@ -58,7 +58,7 @@ const Wizard = (init: WithOwner) =>
     name: 'Wizard',
     attack: 5,
     health: 1,
-    startHealth: 1,
+    maxHealth: 1,
     ...init,
   });
 

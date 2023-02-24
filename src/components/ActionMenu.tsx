@@ -1,4 +1,5 @@
 import { StyledComponentProps } from '../compose/styles';
+import { Button } from '@blueprintjs/core';
 
 interface ActionMenuProps extends StyledComponentProps {
   actions: string[];
@@ -21,16 +22,9 @@ export const ActionMenu = ({
       }}
     >
       {actions.map((action, i) => (
-        <button
-          key={i}
-          style={{
-            fontSize: '1.5rem',
-            padding: '10px',
-          }}
-          onClick={() => onActionClick(action)}
-        >
+        <Button key={i} onClick={() => onActionClick(action)}>
           {action}
-        </button>
+        </Button>
       ))}
     </div>
   );

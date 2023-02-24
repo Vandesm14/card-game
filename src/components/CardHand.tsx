@@ -15,20 +15,29 @@ export const CardHand = ({ cards, title, highlight, style }: CardHandProps) => {
         ...flex.col,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        ...(highlight ? { backgroundColor: '#fff4' } : {}),
         ...style,
       }}
     >
-      <h2>{title}</h2>
+      <h2
+        style={{
+          width: '100%',
+          textAlign: 'center',
+          padding: '10px 0',
+          margin: 0,
+          ...(highlight ? { backgroundColor: '#fff2' } : {}),
+        }}
+      >
+        {title}
+      </h2>
       <div
         style={{
           ...flex.row,
           ...flex.center,
         }}
       >
-        {cards.map((card, i) => (
+        {cards.map((card) => (
           <CardFace
-            key={i}
+            key={card.id}
             card={card}
             style={{
               margin: '10px',
