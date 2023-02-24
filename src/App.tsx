@@ -47,19 +47,21 @@ function Main() {
 
       if (didHitEnemy) {
         newDefenderCard.health -= card.attack;
+        const isDead = !isAlive(newDefenderCard);
 
         emit({
           resource: 'card',
           id: defenderCard.id,
-          text: `- ${card.attack}`,
+          text: isDead ? `Kill` : `- ${card.attack}`,
         });
       } else {
         newCard.health -= defenderCard.attack;
+        const isDead = !isAlive(newCard);
 
         emit({
           resource: 'card',
           id: card.id,
-          text: `- ${defenderCard.attack}`,
+          text: isDead ? `Kill` : `- ${defenderCard.attack}`,
         });
       }
 
