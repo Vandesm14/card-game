@@ -28,11 +28,11 @@ function Main() {
   const game = useGame();
 
   const attack = async () => {
-    const { cards, attacker, defender } = game;
-    if (!attacker || !defender) return;
+    const { cards, turn, defender } = game;
+    if (!turn || !defender) return;
 
     const defenderCard = cards.find(byId(defender));
-    const attackerCards = cards.filter(byOwner(attacker));
+    const attackerCards = cards.filter(byOwner(turn));
     if (!defenderCard || attackerCards.length === 0) return;
 
     const newDefenderCard = { ...defenderCard };
@@ -75,15 +75,29 @@ function Main() {
       }
     }
 
+    // If the next turn is the enemy, wait a second before doing their turn
+    if (game.turn === 'player' && canAttack(game))
+      setTimeout(() => doAITurn(), 1000);
+
     game.flipTurn();
     game.clearBattle();
   };
+
+  const doAITurn = () => {
+    const playerCards = game.cards.filter(byOwner('player'));
+    const defender =
+      playerCards[Math.floor(Math.random() * playerCards.length)];
+
+    game.setDefender(defender.id);
+  };
+
+  const isAttacking = !!game.attacker;
 
   React.useEffect(() => {
     if (canAttack(game)) {
       attack();
     }
-  }, [game.attacker, game.defender, game.turn]);
+  }, [game.defender, game.turn]);
 
   return (
     <main
@@ -93,10 +107,24 @@ function Main() {
         height: '100vh',
       }}
     >
-      <CardHand owner="enemy" title="Enemy" />
       <CardHand
-        owner="player"
+        highlight={game.turn === 'enemy' && !isAttacking}
+        title="Enemy"
+        cards={game.cards
+          .filter(byOwner('enemy'))
+          .filter((card) => card.id !== game.defender)}
+      />
+      {game.defender ? (
+        <CardHand
+          highlight={!!game.defender}
+          title="Arena"
+          cards={game.cards.filter((card) => card.id === game.defender)}
+        />
+      ) : null}
+      <CardHand
+        highlight={game.turn === 'player' && !isAttacking}
         title="Player"
+        cards={game.cards.filter(byOwner('player'))}
         style={{
           width: '100%',
         }}

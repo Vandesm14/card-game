@@ -1,30 +1,21 @@
-import { Card, byOwner } from '../cards';
+import { Card } from '../cards';
 import { flex, StyledComponentProps } from '../compose/styles';
-import { useGame } from '../game';
 import { CardFace } from './Card';
-import { shallow } from 'zustand/shallow';
 
 export interface CardHandProps extends StyledComponentProps {
-  owner: Card['owner'];
+  cards: Card[];
   title?: string;
+  highlight?: boolean;
 }
 
-export const CardHand = ({ owner, title, style }: CardHandProps) => {
-  const { cards, turn } = useGame(
-    (state) => ({
-      cards: state.cards.filter(byOwner(owner)),
-      turn: state.turn,
-    }),
-    shallow
-  );
-
+export const CardHand = ({ cards, title, highlight, style }: CardHandProps) => {
   return (
     <div
       style={{
         ...flex.col,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        ...(turn === owner ? { backgroundColor: '#fff4' } : {}),
+        ...(highlight ? { backgroundColor: '#fff4' } : {}),
         ...style,
       }}
     >

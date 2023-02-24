@@ -70,7 +70,9 @@ export const CardFace = ({ card, style, onClick }: CardFaceProps) => {
       }}
       onClick={() => onClick?.(card)}
     >
-      <Marker text={marker ?? ''} color="red" show={Boolean(marker)} />
+      {card.owner === 'player' ? (
+        <Marker text={marker ?? ''} color="red" show={Boolean(marker)} />
+      ) : null}
       <h2 style={{ margin: 0 }} title={card.description}>
         {card.name}
       </h2>
@@ -85,6 +87,9 @@ export const CardFace = ({ card, style, onClick }: CardFaceProps) => {
         onActionClick={handleActionClick}
         style={{ bottom: '10px', position: 'absolute', width: '100%', left: 0 }}
       />
+      {card.owner === 'enemy' ? (
+        <Marker text={marker ?? ''} color="red" show={Boolean(marker)} />
+      ) : null}
     </div>
   );
 };
