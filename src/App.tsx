@@ -9,22 +9,8 @@ import { byId, byOwner, isAlive } from './cards';
 import { chance } from './chance';
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-// acts like a map, but awaits each item
-const mapAsync = async <T, U>(
-  arr: T[],
-  fn: (item: T, index: number, arr: T[]) => Promise<U>
-): Promise<U[]> => {
-  const results: U[] = [];
-  for (let i = 0; i < arr.length; i++) {
-    results.push(await fn(arr[i], i, arr));
-  }
-  return results;
-};
-
 function Main() {
   const { emit } = useEnqueue();
-
   const game = useGame();
 
   const attack = async () => {
@@ -72,13 +58,21 @@ function Main() {
 
       if (!isAlive(newDefenderCard)) {
         game.removeCard(defenderCard.id);
-      } else if (!isAlive(newCard)) {
+
+        // If the enemy is dead, we win!
+        break;
+      }
+      if (!isAlive(newCard)) {
         game.removeCard(newCard.id);
       }
     }
 
     // If the next turn is the enemy, wait a second before doing their turn
-    if (game.turn === 'player' && canAttack(game))
+    if (
+      game.turn === 'player' &&
+      game.getCardsByOwner('player').length > 0 &&
+      game.getCardsByOwner('enemy').length > 0
+    )
       setTimeout(() => doAITurn(), 1000);
 
     game.flipTurn();
@@ -110,7 +104,7 @@ function Main() {
       }}
     >
       <CardHand
-        highlight={game.turn === 'enemy' && !isAttacking}
+        highlight={game.turn === 'enemy'}
         title="Enemy"
         cards={game.cards
           .filter(byOwner('enemy'))
@@ -118,15 +112,16 @@ function Main() {
       />
       {game.defender ? (
         <CardHand
-          highlight={!!game.defender}
           title="Arena"
           cards={game.cards.filter((card) => card.id === game.defender)}
         />
       ) : null}
       <CardHand
-        highlight={game.turn === 'player' && !isAttacking}
+        highlight={game.turn === 'player'}
         title="Player"
-        cards={game.cards.filter(byOwner('player'))}
+        cards={game.cards
+          .filter(byOwner('player'))
+          .filter((card) => card.id !== game.defender)}
         style={{
           width: '100%',
         }}

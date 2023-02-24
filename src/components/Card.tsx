@@ -40,6 +40,15 @@ export const CardFace = ({ card, style, onClick }: CardFaceProps) => {
       },
     ]) ?? {};
 
+  const borderStyle: React.CSSProperties =
+    card.owner === 'player'
+      ? {
+          border: '2px solid blue',
+        }
+      : {
+          border: '2px solid red',
+        };
+
   React.useEffect(() => {
     if (item && !marker) {
       setMarker(item.data.text);
@@ -64,9 +73,10 @@ export const CardFace = ({ card, style, onClick }: CardFaceProps) => {
         padding: '10px',
         backgroundColor: 'white',
         color: 'black',
-        ...battleStyle,
-        ...(style ?? {}),
         position: 'relative',
+        ...battleStyle,
+        ...borderStyle,
+        ...(style ?? {}),
       }}
       onClick={() => onClick?.(card)}
     >

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Card, Goblin, GoblinArcher, Hero, HeroArcher } from './cards';
+import { byId, byOwner, Card, Kinds } from './cards';
 
 export type Owner = 'player' | 'enemy';
 
@@ -13,6 +13,8 @@ export interface Game {
   addCard: (card: Card) => void;
   removeCard: (cardId: Card['id']) => void;
   updateCard: (card: Card) => void;
+  getCard: (cardId: Card['id']) => Card | undefined;
+  getCardsByOwner: (owner: Owner) => Card[];
 
   setTurn: (turn: Owner) => void;
   flipTurn: () => void;
@@ -22,8 +24,17 @@ export interface Game {
   clearBattle: () => void;
 }
 
-export const useGame = create<Game>((set) => ({
-  cards: [Hero(), HeroArcher(), Goblin(), Goblin(), GoblinArcher()],
+const pickRandomCards = (count: number, owner: Owner): Card[] => {
+  const cards = [];
+  for (let i = 0; i < count; i++) {
+    const kind = Object.values(Kinds)[Math.floor(Math.random() * 4)];
+    cards.push(kind({ owner }));
+  }
+  return cards;
+};
+
+export const useGame = create<Game>((set, get) => ({
+  cards: [...pickRandomCards(4, 'player'), ...pickRandomCards(4, 'enemy')],
   turn: 'player',
   attacker: 'player',
   defender: undefined,
@@ -38,6 +49,8 @@ export const useGame = create<Game>((set) => ({
     set((state) => ({
       cards: state.cards.map((c) => (c.id === card.id ? card : c)),
     })),
+  getCard: (cardId) => get().cards.find(byId(cardId)),
+  getCardsByOwner: (owner) => get().cards.filter(byOwner(owner)),
 
   setTurn: (turn) => set({ turn }),
   flipTurn: () =>

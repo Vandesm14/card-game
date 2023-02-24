@@ -1,11 +1,10 @@
 export class Card {
   public readonly id!: string;
   public readonly name!: string;
-  public readonly description!: string;
-  public readonly image!: string;
+  public readonly description?: string;
+  public readonly image?: string;
 
   public attack!: number;
-  public defense!: number;
   public health!: number;
 
   public owner!: string;
@@ -19,55 +18,48 @@ export const isAlive = (card: Card) => card.health > 0;
 export const byOwner = (owner: string) => (card: Card) => card.owner === owner;
 export const byId = (id: string) => (card: Card) => card.id === id;
 
+type WithOwner = Partial<Card> & Pick<Card, 'owner'>;
+
 export const uuid = () => Math.random().toString(36).substring(2, 15);
-export const Hero = (init?: Partial<Card>) =>
+const Soldier = (init: WithOwner) =>
   new Card({
     id: uuid(),
-    name: 'Hero',
-    description: 'A hero',
-    image: 'hero.png',
+    name: 'Soldier',
     attack: 2,
-    defense: 3,
-    health: 5,
-    owner: 'player',
+    health: 2,
     ...init,
   });
 
-export const HeroArcher = (init?: Partial<Card>) =>
+const Archer = (init: WithOwner) =>
   new Card({
     id: uuid(),
-    name: 'Hero Archer',
-    description: 'A hero archer',
-    image: 'hero-archer.png',
+    name: 'Archer',
     attack: 4,
-    defense: 1,
-    health: 4,
-    owner: 'player',
+    health: 1,
     ...init,
   });
 
-export const Goblin = (init?: Partial<Card>) =>
+const Brute = (init: WithOwner) =>
   new Card({
     id: uuid(),
-    name: 'Goblin',
-    description: 'A goblin',
-    image: 'goblin.png',
-    attack: 2,
-    defense: 3,
+    name: 'Brute',
+    attack: 1,
     health: 5,
-    owner: 'enemy',
     ...init,
   });
 
-export const GoblinArcher = (init?: Partial<Card>) =>
+const Wizard = (init: WithOwner) =>
   new Card({
     id: uuid(),
-    name: 'Goblin Archer',
-    description: 'A goblin archer',
-    image: 'goblin-archer.png',
-    attack: 4,
-    defense: 1,
-    health: 4,
-    owner: 'enemy',
+    name: 'Wizard',
+    attack: 5,
+    health: 1,
     ...init,
   });
+
+export const Kinds = {
+  Soldier,
+  Archer,
+  Brute,
+  Wizard,
+};
