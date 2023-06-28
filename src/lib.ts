@@ -1,12 +1,12 @@
 export type Tagged<T extends string, V> = V & { _tag: T };
 
-export type Player = Tagged<"player", { deck: Deck; lanes: Lane[] }>;
+export type Player = Tagged<'player', { deck: Deck; lanes: Lane[] }>;
 
-export type Deck = Tagged<"deck", (Unit | Power)[]>;
-export type Lane = Tagged<"lane", Unit | Power>;
+export type Deck = Tagged<'deck', (Unit | Power)[]>;
+export type Lane = Tagged<'lane', Unit | Power>;
 
 export type Unit = Tagged<
-  "unit",
+  'unit',
   {
     health: Health;
     attack: Attack;
@@ -14,27 +14,27 @@ export type Unit = Tagged<
   }
 >;
 export type Power = Tagged<
-  "power",
+  'power',
   { duration: number } & ({ attack: Attack } | { special: Special })
 >;
 
-export type Health = Tagged<"health", { max: number; current: number }>;
-export type Attack = Tagged<"attack", { max: number; min: number }>;
+export type Health = Tagged<'health', { max: number; current: number }>;
+export type Attack = Tagged<'attack', { max: number; min: number }>;
 export type Special = Tagged<
-  "special",
+  'special',
   {
     cost: number;
     special: (players: Player[]) => Player[];
   }
 >;
 
-function createPlayer() {}
+export function createPlayer() {}
 
 // type Unit = Tagged<"unit", {}>;
 
-console.log(createUnit("", 0, 0, 0, ""));
+console.log(createUnit('', 0, 0, 0, ''));
 
-function createUnit(
+export function createUnit(
   name: string,
   attack: number,
   hp: number,
@@ -42,7 +42,7 @@ function createUnit(
   imageURL: string
 ): any {
   return {
-    _tag: "unit",
+    _tag: 'unit',
     // name,
     // attack,
     // hp,
